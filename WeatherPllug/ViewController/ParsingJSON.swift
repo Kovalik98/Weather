@@ -11,6 +11,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import CoreLocation
+
+
 extension ViewController{
     
     func Occasionally ()  {
@@ -21,10 +23,10 @@ extension ViewController{
                 let jsonResponse = JSON(responseStr)
                 for i in 0..<7{
                     let jsonTemp = jsonResponse["list"].array![i]
-                    let tempmain = jsonTemp["temp"]
-                    let tampmin = tempmain["min"].intValue
-                    let tampmax = tempmain["max"].intValue
-                    let tempdt = tempmain["day"].stringValue
+                    let tempMain = jsonTemp["temp"]
+                    let tampmin = tempMain["min"].intValue
+                    let tampmax = tempMain["max"].intValue
+
                     
                     let timeResult = jsonTemp["dt"].doubleValue
                     let date = Date(timeIntervalSince1970: timeResult)
@@ -50,7 +52,7 @@ extension ViewController{
             if let responseStr = response.result.value {
                 
                 let jsonResponse = JSON(responseStr)
-                for i in 0..<24{
+                for i in 0..<14{
                     let jsonTemp = jsonResponse["list"].array![i]
                     let tempmain = jsonTemp["main"]
                     let tempdt = tempmain["temp"].intValue
@@ -65,7 +67,6 @@ extension ViewController{
                     self.LabelLocation.text = self.jsonName
                     self.LabelDecription.text = self.jsonDescription
                     self.convertUTCDate(dateToConvert: dt_txt)
-                    
                     self.masHourly.append(Hourly.init(tempdt: tempdt, datedt: self.hour, iconName: mainImage))
                     
                     

@@ -16,14 +16,6 @@
 
 
 
-    struct Course {
-        let jsonName: String
-        let temp: Int
-        let jsonDescription: String
-        let tempmax: Int
-        let tempmin: Int
-    }
-
     class TableViewController: UITableViewController, CLLocationManagerDelegate {
         var SearchName = String()
         var tempSearchName = Int()
@@ -31,9 +23,13 @@
         var tempmaxSerch = Int()
         var tempminSerch = Int()
         var degree = 273
+        var lonSerch = Double()
+       
         
-        @IBOutlet var tebleView: UITableView!
-        let apiKey = "1c8dd02cb7ac88cdd7bc741c4ebc3945"
+        
+         var apiKey: String{
+           return "f23e9fefec26a337e0a58ad0502bed89"
+        }
         var lat = Double()
         var long = Double()
         var activityIndicator: NVActivityIndicatorView!
@@ -53,57 +49,22 @@
                 locationManager.desiredAccuracy = kCLLocationAccuracyBest
                 locationManager.startUpdatingLocation()
             }
-            
-            
-         
-            
-           
             self.tableView.reloadData()
             
-        }
-        
-        
-        
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            let location = locations[0]
-            lat = location.coordinate.latitude
-            long = location.coordinate.longitude
+         
+         
             
-            
-            //MARK: Json Parser
-            Alamofire.request("https://samples.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=\(apiKey)").responseJSON {
-                response in
-                self.activityIndicator.stopAnimating()
-                if let responseStr = response.result.value {
-                    let jsonResponse = JSON(responseStr)
-                    let jsonWeather = jsonResponse["weather"].array![0]
-                    let jsonDescription = jsonWeather["description"].stringValue
-                    let jsonName = jsonResponse["name"].stringValue
-                    let jsonTemp = jsonResponse["main"]
-                    let temp = jsonTemp["temp"].intValue
-                    let tempmax = jsonTemp["temp_max"].intValue
-                    let tempmin = jsonTemp["temp_min"].intValue
-                    
-                    
-
-                    
-                    self.posts.append(Course.init(jsonName: jsonName, temp: temp, jsonDescription: jsonDescription,  tempmax:tempmax, tempmin: tempmin))
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    
-                
-                   
-                   
-                }
-                
-            }
-            self.locationManager.stopUpdatingLocation()
         }
         
         
       
+        func addCity()   {
+            let person1: Course = Course(jsonName: SearchName, temp: tempSearchName, jsonDescription: mainSerch, tempmax: tempmaxSerch, tempmin: tempminSerch)
+            if person1.jsonName.count > 0 {
+                posts.append(person1)
+                
+            }
+        }
         
         
        //MARK: PORTABLE DATACHANGE ON TSELSI
@@ -116,8 +77,7 @@
         @IBAction func kelvin(_ sender: Any) {
             degree = 0
             self.tableView.reloadData()
-            
-        }
+                    }
         
         //MARK: TABLE VIEW
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -132,6 +92,9 @@
             mainid.text = "\(String(posts[indexPath.row].temp - degree))°"
             let maintitle = cell?.viewWithTag(2) as! UILabel
             maintitle.text = posts[indexPath.row].jsonName
+           
+            
+            
             
             return cell!
         }

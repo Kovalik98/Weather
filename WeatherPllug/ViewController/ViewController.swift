@@ -72,6 +72,7 @@
                 
                 
             }
+
             
             
             
@@ -84,7 +85,7 @@
                 }
                 else {
                     
-                    return days.count
+                    return days.count/2
                 }
                 
             }
@@ -124,10 +125,10 @@
                   
                     let cell = tableView.dequeueReusableCell(withIdentifier: "InsideTableViewCell") as! InsideTableViewCell
                     
-                    let maintemp = cell.viewWithTag(10) as! UILabel
-                    maintemp.text = days[indexPath.row].day
-                    let daysdt = cell.viewWithTag(11) as! UILabel
-                    daysdt.text = "\(String(days[indexPath.row].tampmin - change))°"
+                    let mainTemp = cell.viewWithTag(10) as! UILabel
+                    mainTemp.text = days[indexPath.row].day
+                    let daysDt = cell.viewWithTag(11) as! UILabel
+                    daysDt.text = "\(String(days[indexPath.row].tampmin - change))°"
                     let daysTempmin = cell.viewWithTag(12) as! UILabel
                     daysTempmin.text = "\(String(days[indexPath.row].tampmax - change))°"
                     let daysImg = cell.viewWithTag(15) as! UIImageView

@@ -18,6 +18,9 @@
         let mainSerch: String
         let tempmaxSerch: Int
         let tempminSerch: Int
+        let lonSerch: Double
+        let latSerch: Double
+        
     }
 
     class SearchBarViewController: UIViewController, UISearchBarDelegate,  UISearchResultsUpdating {
@@ -39,7 +42,7 @@
             
             let keywords = text
             let finalKeywords = keywords.replacingOccurrences(of: " ", with: "+")
-            searchURL = "http://api.openweathermap.org/data/2.5/weather?q=\(finalKeywords)&appid=36ecf583695b7d218c1194e3d584ba91"
+            searchURL = "http://api.openweathermap.org/data/2.5/weather?q=\(finalKeywords)&appid=f23e9fefec26a337e0a58ad0502bed89"
             tableViewCity.reloadData()
             
             Alamofire.request(searchURL).responseJSON {
@@ -57,7 +60,12 @@
                     
                     let mainSerch = weatherSerch["main"].stringValue
                     
-                    self.jsonSearch.append(Search.init(SearchName:jsonWeather, tempSearchName: tempSearchName, mainSerch: mainSerch, tempmaxSerch: tempmaxSerch, tempminSerch: tempminSearch))
+                    let coordSerch = jsonResponse["coord"]
+                    let lonSerch = coordSerch["lon"].doubleValue
+                    let latSerch = coordSerch["lat"].doubleValue
+                    
+                 
+                    self.jsonSearch.append(Search.init(SearchName:jsonWeather, tempSearchName: tempSearchName, mainSerch: mainSerch, tempmaxSerch: tempmaxSerch, tempminSerch: tempminSearch, lonSerch: lonSerch, latSerch: latSerch))
                     self.tableViewCity.reloadData()
                     
                   
@@ -85,6 +93,7 @@
                 //           self.posts.append(Course.init(jsonName: self.SearchName, temp: self.tempSearchName, jsonDescription: self.mainSerch, tempmax: self.tempmaxSerch, tempmin: self.tempminSerch))
                 //
             }
+           
            
         
         }
@@ -174,7 +183,9 @@
                 vc.mainSerch = jsonSearch[indexPath!].mainSerch
                 vc.tempmaxSerch = jsonSearch[indexPath!].tempmaxSerch
                 vc.tempminSerch = jsonSearch[indexPath!].tempminSerch
-               
+//                vc.lonSerch = jsonSearch[indexPath!].lonSerch
+             //   vc.latSerch = jsonSearch[indexPath!].person1
+                
             }
         }
     }
